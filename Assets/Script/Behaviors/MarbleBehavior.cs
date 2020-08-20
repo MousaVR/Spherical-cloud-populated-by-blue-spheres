@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Collections;
 using UnityEngine;
 
 public class MarbleBehavior : MonoBehaviour
 {
     private bool _wasClaimed;
+    private MeshRenderer _rendrer;
     public bool WasClaimed
     {
         get
@@ -29,10 +27,9 @@ public class MarbleBehavior : MonoBehaviour
 
     void Start()
     {
-        Value = UnityEngine.Random.value * 100f - 25f;
         _textmesh = this.transform.Find( "TextboxContainer/Textbox/ScoreText" ).gameObject.GetComponent<TextMesh>();
-        _textmesh.text = Value.ToString( "##.#" );
         _textboxContainer = this.transform.GetChild(0);
+        _rendrer = gameObject.GetComponent<MeshRenderer>();
         _textboxContainer.gameObject.SetActive( false );
         WasClaimed = false;
     }
@@ -51,5 +48,22 @@ public class MarbleBehavior : MonoBehaviour
         }
         //the use of object booling
         _textboxContainer.gameObject.SetActive(false);
+        Reposition();
     }
+    
+    //instead of destroying the marable we will reposition it
+    private void Reposition()
+    {
+        _rendrer.enabled = true;
+        transform.position = UnityEngine.Random.insideUnitSphere * 100f;
+        MarbleContainer.instance.UpdateMarbelsPositions();
+        WasClaimed = false;
+    }
+
+    public void Claim()
+    {
+        WasClaimed = true;
+        _rendrer.enabled = false;
+    }
+
 }

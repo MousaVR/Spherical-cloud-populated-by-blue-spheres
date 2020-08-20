@@ -1,20 +1,23 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class MarbleContainer : MonoBehaviour
 {
     public MarbleBehavior MarblePrefab;
-
     private readonly KDTree<MarbleBehavior> _marbles = new KDTree<MarbleBehavior>();
+    [HideInInspector]
+    public static MarbleContainer instance;
+
+    private void Awake()
+    {
+        if (instance == null) instance = this;
+        else Destroy(this);
+    }
 
     void Start()
-    {
-        StopAllCoroutines();
-        for( var i = 0; i < 500; i++ )//500
+    {      
+        for( var i = 0; i < 500; i++ )
         {
             GenerateMarble();
         }
@@ -24,18 +27,14 @@ public class MarbleContainer : MonoBehaviour
 
     IEnumerator SpawnMarbles()
     {
-        while( true )
+        if( _marbles.Count < 1000 )
         {
-            if( _marbles.Count < 1000 )//1000
+            for( var i = 0; i < 25; i++ )
             {
-                for( var i = 0; i < 25; i++ )
-                {
-                   GenerateMarble();
-                }
+                GenerateMarble();
             }
-            yield return new WaitForEndOfFrame();
-            //yield return new WaitForSeconds( 0.5f );
-        }
+        yield return new WaitForEndOfFrame();
+        }     
     }
 
     private void GenerateMarble()
@@ -46,17 +45,9 @@ public class MarbleContainer : MonoBehaviour
         _marbles.Add( newMarble );
     }
 
-    public void ClaimMarble( MarbleBehavior marble )
+    public void UpdateMarbelsPositions()
     {
-        //if( _marbles.ContainsKey( marble.Id ) )
-        //{
-        //    _marbles.Remove( marble.Id );
-        //}
-        //implementing of object booling
-        marble.WasClaimed = true;
-        marble.transform.position = Random.insideUnitSphere * 100f;
         _marbles.UpdatePositions();
-        marble.WasClaimed = false;
     }
 
     public MarbleBehavior GetCloseMarbleToPosition( Vector3 position )

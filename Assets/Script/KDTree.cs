@@ -30,18 +30,13 @@ public class KDTree<T> : IEnumerable<T>, IEnumerable where T : Component
         }
     }
 
-    /// <summary>
-    /// Method to enable foreach-loops
-    /// </summary>
+    // Method to enable foreach-loops
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
     }
 
-    /// <summary>
-    /// Method to enable foreach-loops
-    /// </summary>
-    /// <returns>Enumberator</returns>
+    // Method to enable foreach-loops
     public IEnumerator<T> GetEnumerator()
     {
         var current = _root;
@@ -52,29 +47,19 @@ public class KDTree<T> : IEnumerable<T>, IEnumerable where T : Component
         }
     }
 
-    /// <summary>
-    /// add item
-    /// </summary>
-    /// <param name="item">item</param>
     public void Add(T item)
     {
         _add(new KdNode() { component = item });
     }
 
-    /// <summary>
-    /// batch add items
-    /// </summary>
-    /// <param name="items">items</param>
+    // batch add items
     public void AddAll(List<T> items)
     {
         foreach (var item in items)
             Add(item);
     }
 
-    /// <summary>
-    /// find first object that matches the given predicate
-    /// </summary>
-    /// <param name="match">lamda expression</param>
+    // find first object that matches the given predicate
     public T Find(Predicate<T> match)
     {
         var current = _root;
@@ -87,10 +72,7 @@ public class KDTree<T> : IEnumerable<T>, IEnumerable where T : Component
         return null;
     }
 
-    /// <summary>
-    /// remove all objects that matches the given predicate
-    /// </summary>
-    /// <param name="match">lamda expression</param>
+    // remove all objects that matches the given predicate
     public void RemoveAll(Predicate<T> match)
     {
         var list = new List<KdNode>(_getNodes());
@@ -114,9 +96,8 @@ public class KDTree<T> : IEnumerable<T>, IEnumerable where T : Component
     }
 
 
-    /// <summary>
-    /// Update positions (if objects moved)
-    /// </summary>
+
+    // Update positions (if objects moved)
     public void UpdatePositions()
     {
         //save old traverse
@@ -202,11 +183,7 @@ public class KDTree<T> : IEnumerable<T>, IEnumerable where T : Component
         return parent;
     }
 
-    /// <summary>
-    /// Find closest object to given position
-    /// </summary>
-    /// <param name="position">position</param>
-    /// <returns>closest object</returns>
+    // Find closest object to given position
     public T FindClosest(Vector3 position)
     {
         return _findClosest(position);
@@ -293,15 +270,5 @@ public class KDTree<T> : IEnumerable<T>, IEnumerable where T : Component
         internal KdNode right;
         internal KdNode next;
         internal KdNode _oldRef;
-    }
-
-/// <summary>
-/// 
-/// </summary>
-/// <param name="name"></param>
-    void test(int name)
-    {
-        FindClosest(Vector3.up);
-        UpdatePositions();
     }
 }

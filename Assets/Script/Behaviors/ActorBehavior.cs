@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ActorBehavior : MonoBehaviour
 {
@@ -10,7 +8,6 @@ public class ActorBehavior : MonoBehaviour
         Hunting,
     }
 
-    public MarbleContainer ContainerReference { get; set; }
     private State _currentState;
     private MarbleBehavior _currentTarget;
 
@@ -30,12 +27,11 @@ public class ActorBehavior : MonoBehaviour
                 UpdateMoving();
                 break;
         }
-        //Debug.Log(_currentState);
     }
 
     private void UpdateIdle()
     {
-        _currentTarget = ContainerReference.GetCloseMarbleToPosition( this.transform.position );
+        _currentTarget = MarbleContainer.instance.GetCloseMarbleToPosition( this.transform.position );
         if( _currentTarget != null )
         {
             _currentState = State.Hunting;
@@ -57,7 +53,7 @@ public class ActorBehavior : MonoBehaviour
 
         if( thisToTarget.magnitude < 0.1f )
         {
-            ContainerReference.ClaimMarble( _currentTarget );
+            _currentTarget.Claim();
             _currentTarget = null;
             _currentState = State.Idle;
         }
