@@ -30,6 +30,7 @@ public class ActorBehavior : MonoBehaviour
                 UpdateMoving();
                 break;
         }
+        //Debug.Log(_currentState);
     }
 
     private void UpdateIdle()

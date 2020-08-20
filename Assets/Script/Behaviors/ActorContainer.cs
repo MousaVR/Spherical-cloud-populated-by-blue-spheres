@@ -13,7 +13,7 @@ public class ActorContainer : MonoBehaviour
     void Start()
     {
         _containerReference = this.gameObject.GetComponent<MarbleContainer>();
-        for( var i = 0; i < 1000; i++ )
+        for( var i = 0; i < 1000; i++ )//1000
         {
             var newActor = Instantiate( ActorPrefab, this.transform );
             newActor.ContainerReference = _containerReference;

@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class MarbleBehavior : MonoBehaviour
 {
-    public Guid Id { get; set; }
     private bool _wasClaimed;
     public bool WasClaimed
     {
@@ -33,7 +32,7 @@ public class MarbleBehavior : MonoBehaviour
         Value = UnityEngine.Random.value * 100f - 25f;
         _textmesh = this.transform.Find( "TextboxContainer/Textbox/ScoreText" ).gameObject.GetComponent<TextMesh>();
         _textmesh.text = Value.ToString( "##.#" );
-        _textboxContainer = this.transform.Find( "TextboxContainer" );
+        _textboxContainer = this.transform.GetChild(0);
         _textboxContainer.gameObject.SetActive( false );
         WasClaimed = false;
     }
@@ -42,12 +41,15 @@ public class MarbleBehavior : MonoBehaviour
     {
         var steps = 60;
         _textboxContainer.localScale = Vector3.zero;
+        Value = UnityEngine.Random.value * 100f - 25f;
+        _textmesh.text = Value.ToString("##.#");
         _textboxContainer.gameObject.SetActive( true );
         for( var i = 0; i < steps; i++ )
         {
             _textboxContainer.localScale += Vector3.one / steps;
             yield return new WaitForEndOfFrame();
         }
-        Destroy(this.gameObject);
+        //the use of object booling
+        _textboxContainer.gameObject.SetActive(false);
     }
 }
